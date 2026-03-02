@@ -208,9 +208,6 @@ export function OnboardingForm({
             />
           )}
         />
-        <p className="mt-1.5 text-xs text-neutral-500">
-          Your country cannot be changed once set.
-        </p>
       </label>
 
       <label>
