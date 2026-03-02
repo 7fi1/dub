@@ -4,7 +4,6 @@ import { getUrlFromStringIfValid } from "@dub/utils";
 interface SocialPlatformConfig {
   patterns: RegExp[];
   allowedChars: RegExp;
-  allowedDomains: string[];
   maxLength?: number;
   name: string;
 }
@@ -19,7 +18,6 @@ export const SOCIAL_PLATFORM_CONFIGS: Record<
       /^@([^\/\?]+)/i,
     ],
     allowedChars: /[^\w.-]/g,
-    allowedDomains: ["youtube.com", "youtu.be"],
     maxLength: 30,
     name: "YouTube",
   },
@@ -29,28 +27,24 @@ export const SOCIAL_PLATFORM_CONFIGS: Record<
       /^@([^\/\?]+)/i,
     ],
     allowedChars: /[^\w]/g,
-    allowedDomains: ["twitter.com", "x.com"],
     maxLength: 15,
     name: "X/Twitter",
   },
   linkedin: {
     patterns: [/^(?:.*\.)?linkedin\.com\/(?:in\/)?([^\/\?]+)/i],
     allowedChars: /[^\w-]/g,
-    allowedDomains: ["linkedin.com"],
     maxLength: 30,
     name: "LinkedIn",
   },
   instagram: {
     patterns: [/^(?:.*\.)?instagram\.com\/([^\/\?]+)/i, /^@([^\/\?]+)/i],
     allowedChars: /[^\w.]/g,
-    allowedDomains: ["instagram.com"],
     maxLength: 30,
     name: "Instagram",
   },
   tiktok: {
     patterns: [/^(?:.*\.)?tiktok\.com\/(?:@)?([^\/\?]+)/i, /^@([^\/\?]+)/i],
     allowedChars: /[^\w.]/g,
-    allowedDomains: ["tiktok.com"],
     maxLength: 24,
     name: "TikTok",
   },
@@ -88,10 +82,6 @@ export const sanitizeSocialHandle = (
 
   const { patterns, allowedChars, allowedDomains, maxLength } =
     SOCIAL_PLATFORM_CONFIGS[platform];
-
-  if (!allowedDomains.some((domain) => handle.toLowerCase().includes(domain))) {
-    return null;
-  }
 
   for (const pattern of patterns) {
     const match = handle.match(pattern);
